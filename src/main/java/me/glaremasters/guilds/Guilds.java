@@ -28,9 +28,12 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.slimjar.app.builder.ApplicationBuilder;
+import io.github.slimjar.resolver.data.Repository;
+import io.github.slimjar.resolver.mirrors.SimpleMirrorSelector;
 import me.glaremasters.guilds.acf.ACFHandler;
 import me.glaremasters.guilds.actions.ActionHandler;
 import me.glaremasters.guilds.api.GuildsAPI;
@@ -72,6 +75,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
@@ -118,6 +122,9 @@ public final class Guilds extends JavaPlugin {
             ApplicationBuilder
                     .appending("Guilds")
                     .downloadDirectoryPath(dependencyDirectory.toPath())
+                    .internalRepositories(Lists.newArrayList(
+                            new Repository(new URL("https://repo.glaremasters.me/repository/public/")),
+                            new Repository(new URL(SimpleMirrorSelector.DEFAULT_CENTRAL_MIRROR_URL))))
                     .build();
             final Instant endInstant = Instant.now();
             final long timeTaken = Duration.between(startInstant, endInstant).toMillis();
@@ -237,8 +244,8 @@ public final class Guilds extends JavaPlugin {
 
         // If they have placeholderapi, enable it.
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-           new PlaceholderAPI(guildHandler).register();
-           guildHandler.setPapi(true);
+            new PlaceholderAPI(guildHandler).register();
+            guildHandler.setPapi(true);
         }
         // start bstats
         Metrics metrics = new Metrics(this, 881);
