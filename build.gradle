@@ -121,7 +121,7 @@ dependencies {
 
 
     // Logger
-    implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("org.slf4j:slf4j-api:1.7.32")
 
     // Kotlin collections
     slim("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
